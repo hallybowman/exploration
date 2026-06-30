@@ -1,0 +1,53 @@
+{
+  "name": "Studio OS Design System",
+  "version": "1.0.0",
+  "description": "Design tokens for the Studio OS landing page.",
+  "colors": {
+    "pageBackground": "#f2efe8",
+    "heroBackground": "#090909",
+    "surface": "#f9f7f2",
+    "text": "#121212",
+    "textLight": "#f7f4ef",
+    "muted": "#6f6b64",
+    "border": "rgba(18, 18, 18, 0.08)",
+    "accent": "#d5b78e"
+  },
+  "typography": {
+    "fontFamily": "Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+    "fontSize": {
+      "body": "1rem",
+      "small": "0.95rem",
+      "lead": "1.1rem",
+      "hero": "clamp(3rem, 6vw, 5rem)"
+    },
+    "lineHeight": {
+      "body": "1.5",
+      "hero": "0.92",
+      "card": "1.8"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "bold": 700
+    }
+  },
+  "spacing": {
+    "small": "12px",
+    "medium": "24px",
+    "large": "40px",
+    "xlarge": "72px"
+  },
+  "layout": {
+    "maxWidth": "1180px",
+    "borderRadius": {
+      "small": "18px",
+      "medium": "24px",
+      "large": "36px"
+    },
+    "shadow": "0 28px 80px rgba(14, 13, 11, 0.08)"
+  },
+  "breakpoints": {
+    "tablet": "980px",
+    "mobile": "740px"
+  }
+}

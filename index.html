@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio OS</title>
+    <style>
+      :root {
+        --page-bg: #f2efe8;
+        --hero-bg: #090909;
+        --surface: #f9f7f2;
+        --text: #121212;
+        --text-light: #f7f4ef;
+        --muted: #6f6b64;
+        --border: rgba(18, 18, 18, 0.08);
+        --accent: #d5b78e;
+        --shadow: 0 28px 80px rgba(14, 13, 11, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--page-bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 40px 24px 72px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .brand {
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .nav a {
+        color: var(--muted);
+        transition: color 180ms ease;
+      }
+
+      .nav a:hover {
+        color: var(--text);
+      }
+
+      .hero {
+        position: relative;
+        margin-top: 28px;
+        padding: 72px 48px 76px;
+        border-radius: 36px;
+        background: var(--hero-bg);
+        color: var(--text-light);
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.08), transparent 25%);
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 720px;
+      }
+
+      .hero-meta {
+        font-size: 0.78rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(247, 244, 239, 0.65);
+        margin-bottom: 22px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(3rem, 6vw, 5rem);
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+        max-width: 12ch;
+      }
+
+      .hero p {
+        margin: 28px 0 0;
+        max-width: 680px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        color: rgba(247, 244, 239, 0.82);
+        line-height: 1.8;
+      }
+
+      .info-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        padding: 34px;
+        margin-top: -34px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        position: relative;
+        z-index: 2;
+      }
+
+      .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .info-label {
+        margin: 0;
+        font-size: 0.75rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .info-value {
+        margin: 0;
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 44px;
+      }
+
+      .card {
+        display: block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 30px;
+        min-height: 220px;
+        transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+        box-shadow: 0 18px 46px rgba(15, 13, 11, 0.06);
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(213, 183, 142, 0.8);
+        box-shadow: 0 26px 68px rgba(15, 13, 11, 0.12);
+      }
+
+      .card h2 {
+        margin: 0 0 14px;
+        font-size: 1.18rem;
+        line-height: 1.2;
+        font-weight: 700;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 0.99rem;
+      }
+
+      .card .link {
+        display: inline-flex;
+        margin-top: 22px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      @media (max-width: 980px) {
+        .card-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 740px) {
+        .page {
+          padding: 24px 18px 48px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero {
+          padding: 48px 26px 52px;
+        }
+
+        .hero h1 {
+          font-size: clamp(2.4rem, 10vw, 3.8rem);
+        }
+
+        .info-strip {
+          grid-template-columns: 1fr;
+          margin-top: -18px;
+          padding: 24px;
+        }
+
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          padding: 26px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="brand">Studio OS</div>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="./360-Feedback/">360 Feedback</a>
+          <a href="./case-study/">Case Study</a>
+          <a href="./home/">Home</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-meta">Design laboratory for product cases</div>
+          <h1>Visual explorations for making invisible design work visible.</h1>
+          <p>
+            A living archive of case study compositions, judgment maps, evidence walls,
+            and AI-assisted design studies.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-strip" aria-label="Design system summary">
+        <div class="info-item">
+          <p class="info-label">Focus</p>
+          <p class="info-value">Product design experiments</p>
+        </div>
+        <div class="info-item">
+          <p class="info-label">Format</p>
+          <p class="info-value">Living index of case studies</p>
+        </div>
+        <div class="info-item">
+          <p class="info-label">Tone</p>
+          <p class="info-value">Editorial, generous, deliberate</p>
+        </div>
+        <div class="info-item">
+          <p class="info-label">Goal</p>
+          <p class="info-value">Surface invisible design work</p>
+        </div>
+      </section>
+
+      <section class="card-grid" aria-label="Project explorations">
+        <a class="card" href="./360-Feedback/">
+          <h2>360 Feedback</h2>
+          <p>
+            Designing an AI-supported judgment system for better feedback conversations.
+          </p>
+          <span class="link">Open exploration →</span>
+        </a>
+
+        <a class="card" href="./case-study/">
+          <h2>Case Study Exploration</h2>
+          <p>
+            A reusable structure for case studies such as the 360 Feedback project.
+          </p>
+          <span class="link">Open exploration →</span>
+        </a>
+
+        <a class="card" href="./home/">
+          <h2>Home Page Exploration</h2>
+          <p>
+            A composition study for evolving the portfolio homepage.
+          </p>
+          <span class="link">Open exploration →</span>
+        </a>
+      </section>
+    </main>
+  </body>
+</html>
