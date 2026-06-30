@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inline AI Commands — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   STUDIO OS · case-study model, in Hally Bowman's house style
+   --------------------------------------------------------------
+   ▼ ONLY EDIT THE TOKENS BELOW to match your exact Squarespace
+     style guide. Everything else inherits from these.
+   ============================================================ */
+:root{
+  /* --- brand tokens (swap for your exact values) --- */
+  --ink:#0B0B0C;          /* black bands + body text       */
+  --paper:#FFFFFF;        /* white sections                */
+  --mist:#F1F0ED;         /* light warm-gray meta strip    */
+  --accent:#E6007E;       /* your magenta                  */
+  --accent-soft:rgba(230,0,126,.10);
+  --ok:#1F9D55;           /* the ✅ green                  */
+  --warn:#C9821B;         /* the ⚠️ amber                  */
+  --font-head:'Poppins',-apple-system,'Segoe UI',sans-serif;  /* ← your heading font */
+  --font-body:'Inter',-apple-system,'Segoe UI',sans-serif;    /* ← your body font    */
+
+  /* --- derived (usually leave alone) --- */
+  --muted:#6A6760;        /* secondary text on white       */
+  --muted-d:#A7A39C;      /* secondary text on black       */
+  --line:#E6E3DD;         /* hairline on white             */
+  --line-d:rgba(255,255,255,.14);
+  --measure:680px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent-soft)}
+h1,h2,h3{font-family:var(--font-head);font-weight:600;letter-spacing:-.01em;margin:0}
+
+/* ---------- band system (your black/white rhythm) ---------- */
+.band{padding:clamp(56px,9vw,128px) 0;position:relative}
+.band--dark{background:var(--ink);color:#fff}
+.band--mist{background:var(--mist)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.wrap--narrow{max-width:920px}
+.eyebrow{font-family:var(--font-body);font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;color:var(--accent)}
+.band--dark .eyebrow{color:#fff;opacity:.85}
+
+/* ---------- wave divider (your signature transition) ---------- */
+.wave{display:block;width:100%;height:clamp(36px,5vw,72px);margin:0;line-height:0}
+.wave svg{display:block;width:100%;height:100%}
+
+/* ---------- reveal ---------- */
+.r{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.r.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.r{opacity:1;transform:none;transition:none}}
+
+/* ============ HERO (thesis, not a screen) ============ */
+.hero{text-align:center;padding:clamp(64px,11vw,150px) 0 clamp(60px,9vw,120px)}
+.hero .eyebrow{margin-bottom:22px}
+.hero h1{font-size:clamp(34px,6.2vw,68px);line-height:1.06;max-width:18ch;margin:0 auto}
+.hero .thesis{font-family:var(--font-body);font-size:clamp(18px,2.4vw,23px);line-height:1.55;color:var(--muted-d);max-width:46ch;margin:clamp(26px,4vw,40px) auto 0;font-weight:400}
+.hero .thesis b{color:#fff;font-weight:500}
+
+/* ============ META STRIP (kept identical to your site) ============ */
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px clamp(40px,8vw,120px);max-width:820px;margin:0 auto}
+.meta .row{display:grid;gap:14px}
+.meta .pair b{font-family:var(--font-head);font-weight:600}
+.meta .pair{font-size:16px}
+.meta .pair span{color:var(--muted)}
+
+/* ============ section headers ============ */
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(28px,4vw,48px);flex-wrap:wrap}
+.zone{font-family:var(--font-body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--accent);border:1px solid currentColor;border-radius:100px;padding:4px 12px}
+.sec-head h2{font-size:clamp(24px,3.6vw,38px)}
+.band--dark .sec-head h2{color:#fff}
+.sec-sub{font-size:clamp(17px,2vw,19px);color:var(--muted);max-width:var(--measure);margin:-6px 0 clamp(26px,4vw,44px)}
+.band--dark .sec-sub{color:var(--muted-d)}
+
+/* ============ FIELD NOTES ============ */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:clamp(16px,2vw,24px)}
+.note{border-top:2px solid var(--ink);padding-top:18px}
+.note p{font-family:var(--font-head);font-weight:500;font-size:clamp(19px,2.1vw,23px);line-height:1.3;margin:0 0 14px}
+.note .src{font-family:var(--font-body);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.note .src i{font-style:normal;color:var(--accent)}
+
+/* ============ COMPOSITION (the system, no screens) ============ */
+.canvas{background:#0F0F12;border:1px solid var(--line-d);border-radius:14px;padding:clamp(22px,4vw,48px);box-shadow:0 50px 90px -60px rgba(0,0,0,.7)}
+.canvas svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--font-body);font-size:12.5px;color:var(--muted-d);margin-top:20px}
+.legend span{display:inline-flex;gap:8px;align-items:center}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* ============ DECISION MOMENTS (your accordion pattern) ============ */
+.decisions{border-top:1px solid var(--line)}
+.dm{border-bottom:1px solid var(--line)}
+.dm summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:18px;padding:22px 6px;font-family:inherit}
+.dm summary::-webkit-details-marker{display:none}
+.dm summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.dm .n{font-family:var(--font-head);font-weight:600;font-size:15px;color:var(--accent);min-width:2.6ch}
+.dm .title{font-family:var(--font-head);font-weight:600;font-size:clamp(18px,2.2vw,22px);flex:1;line-height:1.25}
+.dm .chev{width:13px;height:13px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .3s ease;flex:none}
+.dm[open] .chev{transform:rotate(-135deg)}
+.dm .body{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;padding:0 6px 26px;max-width:900px}
+.dm .f{padding:14px 0;border-top:1px solid var(--line)}
+.dm .f.span{grid-column:1/-1}
+.dm .f .k{font-family:var(--font-body);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.dm .f .v{font-size:16px;line-height:1.5}
+.dm .trade .pc{display:flex;flex-direction:column;gap:7px}
+.dm .trade .pc span{display:flex;gap:9px;align-items:flex-start;font-size:15.5px}
+.dm .trade .pc .ok b,.dm .trade .pc .warn b{font-weight:600}
+.dm .trade .pc .ok b{color:var(--ok)}
+.dm .trade .pc .warn b{color:var(--warn)}
+.dm .placeholder{color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:1px 7px;font-size:13px;font-family:var(--font-body)}
+@media(max-width:560px){.dm .body{grid-template-columns:1fr}}
+
+/* ============ EVIDENCE WALL ============ */
+.note-strip{font-family:var(--font-body);font-size:14px;color:var(--muted);margin:-10px 0 clamp(24px,3vw,40px);max-width:var(--measure)}
+.wall{columns:3 260px;column-gap:22px}
+@media(max-width:680px){.wall{columns:1}}
+.ev{break-inside:avoid;margin:0 0 22px;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ev .pad{padding:20px}
+.ev .kind{font-family:var(--font-body);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:11px}
+.ev p{margin:0;font-size:15.5px;line-height:1.5}
+.ev.quote p{font-family:var(--font-head);font-weight:500;font-size:18px;line-height:1.36}
+.ev.quote .src{font-family:var(--font-body);font-size:11.5px;color:var(--muted);display:block;margin-top:12px;letter-spacing:.04em;text-transform:uppercase}
+.ev.principle{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ev.principle .kind{color:var(--accent);opacity:1}
+.ev.principle p{font-family:var(--font-head);font-weight:500;font-size:18px;line-height:1.32}
+.ev.pros .kind{color:var(--muted)}
+.ev.pros .pc{display:flex;flex-direction:column;gap:9px;margin-top:2px}
+.ev.pros .pc span{display:flex;gap:9px;font-size:14.5px;line-height:1.4}
+.ev.pros .pc .ok b{color:var(--ok)}
+.ev.pros .pc .warn b{color:var(--warn)}
+.ev .shot{height:170px;background:
+  linear-gradient(135deg,#fafafa,#eee);
+  border-bottom:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center}
+.ev .shot .tag{position:absolute;left:12px;bottom:10px;font-family:var(--font-body);font-size:10.5px;color:#fff;background:rgba(11,11,12,.62);padding:4px 9px;border-radius:5px;letter-spacing:.04em}
+.ev .shot .swap{font-family:var(--font-body);font-size:12px;color:var(--muted);border:1px dashed #cfccc4;border-radius:6px;padding:7px 12px;background:#fff}
+.ev .shot.magenta{background:linear-gradient(135deg,#fff,var(--accent-soft))}
+.ev .shot.magenta::after{content:"";position:absolute;top:14px;right:14px;width:16px;height:16px;border-radius:4px;background:var(--accent)}
+.ev .swatch{display:flex;gap:6px;margin-top:4px}
+.ev .swatch i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.ev .swatch i.a{background:var(--accent)}
+.ev .swatch i.b{background:#5B4BD6}
+
+/* ============ REFLECTION (closing dark band) ============ */
+.reflect{display:grid;gap:clamp(28px,4vw,52px);max-width:780px;margin:0 auto}
+.reflect .item{border-left:2px solid var(--accent);padding-left:24px}
+.reflect .q{font-family:var(--font-body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-d);margin-bottom:12px}
+.reflect .a{font-family:var(--font-head);font-weight:500;font-size:clamp(21px,2.7vw,29px);line-height:1.32;color:#fff}
+.reflect .a b{color:var(--accent);font-weight:600}
+
+footer{padding:clamp(40px,6vw,72px) 0 64px;text-align:center;color:var(--muted);font-family:var(--font-body);font-size:13px;letter-spacing:.05em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="band band--dark hero">
+  <div class="wrap">
+    <div class="eyebrow r">Jasper AI · Gen AI Commands</div>
+    <h1 class="r">Making AI discoverable without making it loud.</h1>
+    <p class="thesis r">The redesign was never really a UI problem. It was a <b>judgment problem</b> — how to surface generative power inside an editor people already trusted, without breaking the writer's flow.</p>
+  </div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,80 L0,28 C 360,76 1080,-12 1440,36 L1440,80 Z" fill="#F1F0ED"/></svg></div>
+
+<!-- ============ META STRIP ============ -->
+<section class="band band--mist" style="padding-top:clamp(36px,5vw,64px);padding-bottom:clamp(36px,5vw,64px)">
+  <div class="wrap meta r">
+    <div class="row">
+      <div class="pair"><b>Role:</b> <span>Staff Product Designer</span></div>
+      <div class="pair"><b>Work:</b> <span>UX Product · UI · Research</span></div>
+    </div>
+    <div class="row">
+      <div class="pair"><b>Project:</b> <span>Gen AI Commands</span></div>
+      <div class="pair"><b>Company:</b> <span>Jasper AI</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FIELD NOTES ============ -->
+<section class="band" id="notes">
+  <div class="wrap">
+    <div class="sec-head r"><span class="zone">Zone 01 · Signal</span><h2>What users actually said</h2></div>
+    <p class="sec-sub r">Before a single screen, the research said the same thing five different ways. These are the raw notes the whole redesign answers to.</p>
+    <div class="notes r" data-render="notes"></div>
+  </div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,80 L0,40 C 420,-8 1020,84 1440,30 L1440,80 Z" fill="#0B0B0C"/></svg></div>
+
+<!-- ============ COMPOSITION ============ -->
+<section class="band band--dark" id="composition">
+  <div class="wrap">
+    <div class="sec-head r"><span class="zone" style="color:#fff;border-color:rgba(255,255,255,.35)">Zone 02 · System</span><h2>Inline AI commands as a discovery system</h2></div>
+    <p class="sec-sub r">Not a flowchart and not a screen — a map of the design space, and which path the work actually took.</p>
+    <div class="canvas r" data-render="composition"></div>
+    <div class="legend r">
+      <span><i style="background:#fff"></i> the problem &amp; the chosen path</span>
+      <span><i style="background:var(--accent)"></i> design decision</span>
+      <span><i style="background:#46444C"></i> explored, not chosen</span>
+    </div>
+  </div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,80 L0,30 C 380,80 1060,-10 1440,40 L1440,80 Z" fill="#FFFFFF"/></svg></div>
+
+<!-- ============ DECISION MOMENTS ============ -->
+<section class="band" id="decisions">
+  <div class="wrap wrap--narrow">
+    <div class="sec-head r"><span class="zone">Zone 03 · Judgment</span><h2>Decision moments</h2></div>
+    <p class="sec-sub r">Each is a small case study in trade-offs. The work lived here — not in the pixels.</p>
+    <div class="decisions r" data-render="decisions"></div>
+  </div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,80 L0,40 C 420,-6 1020,82 1440,32 L1440,80 Z" fill="#F1F0ED"/></svg></div>
+
+<!-- ============ EVIDENCE WALL ============ -->
+<section class="band band--mist" id="evidence">
+  <div class="wrap">
+    <div class="sec-head r"><span class="zone">Zone 04 · Evidence</span><h2>The evidence wall</h2></div>
+    <p class="note-strip r">This is the only zone where screens appear — and they appear as <i>evidence</i>, sitting alongside interviews, principles, and explorations rather than standing in for the work.</p>
+    <div class="wall r" data-render="evidence"></div>
+  </div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,80 L0,30 C 380,78 1060,-12 1440,38 L1440,80 Z" fill="#0B0B0C"/></svg></div>
+
+<!-- ============ REFLECTION ============ -->
+<section class="band band--dark" id="reflection">
+  <div class="wrap">
+    <div class="sec-head r"><span class="zone" style="color:#fff;border-color:rgba(255,255,255,.35)">Zone 05 · Reflection</span><h2>What the project taught me</h2></div>
+    <div class="reflect r" data-render="reflection"></div>
+  </div>
+</section>
+
+<footer>Case-study model · Studio OS × Hally Bowman house style — content where marked “[ your input ]” is yours to complete.</footer>
+
+<script>
+/* =================== CONTENT ===================
+   ✓ = pulled from your live case study
+   ✎ = scaffolding for you to confirm / replace
+*/
+const DATA = {
+  notes:[ /* ✓ your real research quotes */
+    {t:"I don’t think in commands.",src:"on the command <i>mental model</i>"},
+    {t:"Wait — I can use AI here?",src:"on <i>discoverability</i>"},
+    {t:"It broke my flow.",src:"on <i>intrusion</i>"},
+    {t:"Is that what that does?",src:"Mark · on <i>legibility</i>"},
+    {t:"How do I get it out of the way?",src:"Marissa · on <i>control</i>"}
+  ],
+  decisions:[
+    { /* ✓ real: command vs. natural-language */
+      t:"Commands, or no commands?",
+      problem:"Typed commands intimidated people — many didn’t think in command syntax at all, so the most powerful entry point was the least used.",
+      constraint:"The original model assumed command literacy users didn’t have.",
+      decision:"Shift from typed commands toward embedded, visually-guided triggers that meet the writer where they already are.",
+      ok:"Far more approachable for first-time and casual users.",
+      warn:"Slightly slower for power users who liked typing fast commands.",
+      outcome:"Testers stopped asking “where do I type?” — the question the old design kept producing. <span class='placeholder'>[ confirm with your data ]</span>"
+    },
+    { /* ✓ real: hover vs persistent vs guided — straight from your A/B variants */
+      t:"How visible should the AI be?",
+      problem:"Users couldn’t find AI in the editor, but making it persistent risked cluttering a canvas writers trusted.",
+      constraint:"A clean writing surface was the thing people valued most — visibility couldn’t cost that.",
+      decision:"Prototype and A/B-test three configurations — hover-triggered, persistent icons, and guided tooltips — in realistic editing tasks.",
+      ok:"Persistent icons scored highest on raw discoverability and task success.",
+      warn:"Hover felt elegant but went invisible to novices; persistent felt cluttered to some.",
+      outcome:"The most discoverable variant wasn’t the most liked — which pushed the design toward a contextual middle path."
+    },
+    { /* ✓ real: the FABar */
+      t:"Where should the AI live?",
+      problem:"AI actions needed a home that didn’t compete with the text the writer was focused on.",
+      constraint:"Don’t break flow — the recurring complaint was that AI “got in the way.”",
+      decision:"Surface a Floating Action Bar (FABar) in context, near the writer’s selection, appearing when relevant and receding when not.",
+      ok:"Stays out of the way until intent is signalled.",
+      warn:"Adds one more floating element to a learning curve.",
+      outcome:"<span class='placeholder'>[ your outcome — adoption, qualitative feedback, or a quote ]</span>"
+    },
+    { /* ✎ template for you */
+      t:"[ Your fourth decision ]",
+      problem:"[ The tension you were holding ]",
+      constraint:"[ The real-world limit you designed against ]",
+      decision:"[ What you chose to do ]",
+      ok:"[ What this bought you ]",
+      warn:"[ What it cost ]",
+      outcome:"[ What happened — qualitative is fine ]",
+      tmpl:true
+    }
+  ],
+  reflection:[ /* ✎ honest defaults — edit in your own voice */
+    {q:"What changed my thinking",a:"I came in trying to make commands easier to <i>find</i>. I left convinced the real goal was to make them <b>unnecessary</b> — to let intent, not syntax, invoke the AI."},
+    {q:"What surprised me",a:"The most discoverable design wasn’t the most used. <b>Visibility and adoption</b> turned out to be different axes."},
+    {q:"The principle that emerged",a:"Surface power in the user’s <b>flow</b>, not in the chrome."}
+  ]
+};
+
+const EVIDENCE = [
+  {kind:"interview · quote",cls:"quote",html:`<div class="pad"><span class="kind">interview · quote</span><p>“I don’t think in commands.”</p><span class="src">Usability session · power user</span></div>`},
+  {kind:"operating principle",cls:"principle",html:`<div class="pad"><span class="kind">operating principle</span><p>Don’t teach the command. Remove the need for it.</p></div>`},
+  {kind:"annotated screen ✓",cls:"shot-ev",html:`<div class="shot magenta"><span class="swap">drop your FABar annotation here</span><span class="tag">FABar in context · annotated</span></div><div class="pad"><span class="kind">artifact · annotated UI</span><p>The floating action bar, surfaced near the selection and labelled with leader lines.</p></div>`},
+  {kind:"variant test · hover",cls:"pros",html:`<div class="pad"><span class="kind">variant · hover-triggered</span><div class="pc"><span class="ok"><b>✓</b> Intuitive for advanced users</span><span class="warn"><b>!</b> Risk of invisibility for novices</span></div></div>`},
+  {kind:"variant test · persistent",cls:"pros",html:`<div class="pad"><span class="kind">variant · persistent icons</span><div class="pc"><span class="ok"><b>✓</b> High task-success rate</span><span class="warn"><b>!</b> Slight UI heaviness reported</span></div></div>`},
+  {kind:"exploration matrix ✓",cls:"shot-ev",html:`<div class="shot"><span class="swap">drop your UI Explorations matrix</span><span class="tag">UI explorations · affordance grid</span></div><div class="pad"><span class="kind">artifact · exploration</span><p>Command input field vs. inline commands, mapped across affordance and trigger type.</p></div>`},
+  {kind:"interview · quote",cls:"quote",html:`<div class="pad"><span class="kind">interview · quote</span><p>“How do I get it out of the way?”</p><span class="src">Marissa · “distracting”</span></div>`},
+  {kind:"operating principle",cls:"principle",html:`<div class="pad"><span class="kind">operating principle</span><p>Discoverability is a flow problem, not a labeling problem.</p></div>`},
+  {kind:"design space",cls:"swatch-ev",html:`<div class="pad"><span class="kind">design space · three paths</span><p>Hover · persistent · guided tooltip — tested against the same editing tasks.</p><div class="swatch"><i></i><i class="a"></i><i class="b"></i></div></div>`}
+];
+
+/* ---------- the composition: design space + chosen path ---------- */
+function compositionSVG(){
+  const explored = "#46444C", chosen = "#FFFFFF", mark = "#E6007E";
+  return `
+  <svg viewBox="0 0 1000 470" role="img" aria-label="A map of the inline-AI-commands design space: a discoverability problem branches into three tested patterns, and the work converges on a contextual floating action bar.">
+    <defs><style>
+      .l{font-family:'Inter',sans-serif;font-size:13px;fill:#CFCDD4}
+      .lk{font-family:'Inter',sans-serif;font-size:11px;fill:#85838C;letter-spacing:.12em}
+      .big{font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;fill:#fff}
+    </style></defs>
+
+    <text x="40" y="34" class="lk">THE PROBLEM</text>
+    <text x="392" y="34" class="lk">THE DESIGN SPACE — TESTED</text>
+    <text x="800" y="34" class="lk">THE JUDGMENT</text>
+    <line x1="350" y1="52" x2="350" y2="430" stroke="rgba(255,255,255,.10)"/>
+    <line x1="770" y1="52" x2="770" y2="430" stroke="rgba(255,255,255,.10)"/>
+
+    <!-- problem node -->
+    <circle cx="70" cy="235" r="8" fill="${chosen}"/>
+    <text x="88" y="222" class="big">Low</text>
+    <text x="88" y="246" class="big">discoverability</text>
+    <text x="88" y="272" class="l">“Wait, I can use AI here?”</text>
+    <path d="M250 235 C 310 235, 300 130, 350 130" fill="none" stroke="${explored}" stroke-width="1.4"/>
+    <path d="M250 235 C 310 235, 300 235, 350 235" fill="none" stroke="${explored}" stroke-width="1.4"/>
+    <path d="M250 235 C 310 235, 300 340, 350 340" fill="none" stroke="${chosen}" stroke-width="1.6"/>
+
+    <!-- three explored patterns -->
+    <g>
+      <circle cx="350" cy="130" r="6" fill="${mark}"/>
+      <text x="368" y="126" class="l">Hover-triggered</text>
+      <text x="368" y="146" class="lk" style="fill:#7d7b84">elegant · invisible to novices</text>
+
+      <circle cx="350" cy="235" r="6" fill="${mark}"/>
+      <text x="368" y="231" class="l">Persistent icons</text>
+      <text x="368" y="251" class="lk" style="fill:#7d7b84">discoverable · feels cluttered</text>
+
+      <circle cx="350" cy="340" r="7" fill="${mark}" stroke="#fff" stroke-width="1.5"/>
+      <text x="368" y="336" class="l" style="fill:#fff">Guided / contextual</text>
+      <text x="368" y="356" class="lk" style="fill:#7d7b84">in-flow · the chosen direction</text>
+    </g>
+
+    <!-- converge to judgment -->
+    <path d="M520 130 C 660 130, 640 235, 770 235" fill="none" stroke="${explored}" stroke-width="1.2" opacity=".7"/>
+    <path d="M520 235 C 660 235, 660 235, 770 235" fill="none" stroke="${explored}" stroke-width="1.2" opacity=".7"/>
+    <path d="M520 340 C 660 340, 640 235, 770 235" fill="none" stroke="${chosen}" stroke-width="1.8"/>
+    <circle cx="770" cy="235" r="9" fill="#0F0F12" stroke="#fff" stroke-width="1.6"/>
+
+    <!-- outcome -->
+    <path d="M790 235 C 830 235, 840 205, 870 205" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="884" cy="205" r="7" fill="${mark}"/>
+    <text x="800" y="290" class="big">A Floating</text>
+    <text x="800" y="313" class="big">Action Bar,</text>
+    <text x="800" y="336" class="l">surfaced in context.</text>
+    <text x="40" y="452" class="lk">the design effort lives in choosing the path — not in any one screen.</text>
+  </svg>`;
+}
+
+/* =================== RENDER =================== */
+const pick = s => document.querySelector(`[data-render="${s}"]`);
+
+pick("notes").innerHTML = DATA.notes.map(n=>`
+  <figure class="note"><p>${n.t}</p><figcaption class="src">${n.src}</figcaption></figure>`).join("");
+
+pick("composition").innerHTML = compositionSVG();
+
+pick("decisions").innerHTML = DATA.decisions.map((d,i)=>`
+  <details class="dm"${i===0?" open":""}>
+    <summary>
+      <span class="n">0${i+1}</span>
+      <span class="title">${d.t}</span>
+      <span class="chev"></span>
+    </summary>
+    <div class="body">
+      <div class="f span"><span class="k">Problem</span><span class="v">${d.problem}</span></div>
+      <div class="f"><span class="k">Constraint</span><span class="v">${d.constraint}</span></div>
+      <div class="f"><span class="k">Decision</span><span class="v">${d.decision}</span></div>
+      <div class="f trade"><span class="k">Trade-off</span>
+        <div class="pc">
+          <span class="ok"><b>✓ keeps</b>&nbsp;${d.ok}</span>
+          <span class="warn"><b>! costs</b>&nbsp;${d.warn}</span>
+        </div>
+      </div>
+      <div class="f span"><span class="k">Outcome</span><span class="v">${d.outcome}</span></div>
+    </div>
+  </details>`).join("");
+
+pick("evidence").innerHTML = EVIDENCE.map(e=>`<article class="ev ${e.cls}">${e.html}</article>`).join("");
+
+pick("reflection").innerHTML = DATA.reflection.map(r=>`
+  <div class="item"><div class="q">${r.q}</div><div class="a">${r.a}</div></div>`).join("");
+
+/* =================== MOTION =================== */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12,rootMargin:"0px 0px -7% 0px"});
+document.querySelectorAll(".r").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
