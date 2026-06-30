@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hally Bowman — Lead Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HALLY BOWMAN — homepage refresh
+   Same tokens as the case-study page, so the site reads as one
+   system. Edit the brand tokens to match your exact style guide.
+   ============================================================ */
+:root{
+  --ink:#0B0B0C; --paper:#FFFFFF; --mist:#F1F0ED;
+  --accent:#E6007E; --accent-soft:rgba(230,0,126,.10);
+  --font-head:'Poppins',-apple-system,'Segoe UI',sans-serif;
+  --font-body:'Inter',-apple-system,'Segoe UI',sans-serif;
+  --muted:#6A6760; --muted-d:#A7A39C; --line:#E6E3DD; --line-d:rgba(255,255,255,.14);
+  /* data-art categorical palette (used ONLY as data encoding) */
+  --c-ai:#E6007E; --c-data:#3D40C6; --c-commerce:#1F9D8F; --c-other:#C9821B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent-soft)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--font-head);font-weight:600;letter-spacing:-.015em;margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+.eyebrow{font-family:var(--font-body);font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--accent)}
+
+.r{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.r.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.r{opacity:1;transform:none;transition:none}}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--line)}
+.nav .row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav .brand{font-family:var(--font-head);font-weight:600;font-size:18px;letter-spacing:-.01em;text-decoration:none}
+.nav .links{display:flex;gap:clamp(16px,2.4vw,32px);align-items:center}
+.nav .links a{text-decoration:none;font-size:15px;color:var(--muted);transition:color .2s}
+.nav .links a:hover{color:var(--ink)}
+.nav .links .cta{color:var(--ink);border:1px solid var(--ink);border-radius:100px;padding:8px 16px;font-weight:500}
+.nav .links .cta:hover{background:var(--ink);color:#fff}
+@media(max-width:620px){.nav .links a:not(.cta){display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(44px,7vw,92px) 0 clamp(40px,6vw,80px)}
+.hero .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,72px);align-items:center}
+.hero .greet{margin-bottom:18px}
+.hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{font-size:clamp(17px,1.9vw,20px);line-height:1.55;color:var(--muted);max-width:42ch;margin:clamp(20px,3vw,30px) 0 0}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(24px,3.5vw,36px)}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-head);font-weight:500;font-size:15px;border-radius:100px;padding:13px 22px;transition:transform .2s ease,background .2s ease}
+.btn .arr{transition:transform .25s ease}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover .arr{transform:translateX(4px)}
+.btn-ghost{border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink)}
+.hero .cred{margin-top:24px;font-size:13.5px;color:var(--muted);letter-spacing:.02em}
+@media(max-width:780px){.hero .grid{grid-template-columns:1fr;gap:36px}}
+
+/* ---------- data-art panel ---------- */
+.artpanel{background:var(--mist);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,2.4vw,28px)}
+.artpanel svg{width:100%;height:auto;display:block}
+.artcap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
+.artcap .key{display:flex;gap:14px;flex-wrap:wrap}
+.artcap .key span{display:inline-flex;gap:6px;align-items:center}
+.artcap .key i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.artcap .ttl{font-family:var(--font-head);font-weight:500;color:var(--ink)}
+
+/* ---------- featured work ---------- */
+.band{padding:clamp(52px,8vw,104px) 0}
+.band--mist{background:var(--mist)}
+.band--dark{background:var(--ink);color:#fff}
+.sec-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(26px,4vw,44px)}
+.sec-top h2{font-size:clamp(22px,3vw,32px)}
+.sec-top .all{font-size:14px;color:var(--muted);text-decoration:none;display:inline-flex;gap:7px}
+.sec-top .all:hover{color:var(--accent)}
+.feat{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+@media(max-width:680px){.feat{grid-template-columns:1fr}}
+.fcard{background:var(--paper);padding:clamp(26px,3vw,38px);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:14px;min-height:210px;transition:background .3s ease}
+.fcard:hover{background:#fff}
+.fcard .dom{font-family:var(--font-body);font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
+.fcard .dom i{width:8px;height:8px;border-radius:50%}
+.fcard h3{font-size:clamp(20px,2.3vw,25px);line-height:1.18}
+.fcard .thesis{font-size:15.5px;line-height:1.5;color:var(--muted);flex:1}
+.fcard .tags{display:flex;gap:8px;flex-wrap:wrap}
+.fcard .tags span{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:3px 10px}
+.fcard .go{font-family:var(--font-head);font-weight:500;font-size:14px;color:var(--accent);display:inline-flex;gap:8px;align-items:center}
+.fcard .go .arr{transition:transform .25s ease}
+.fcard:hover .go .arr{transform:translateX(4px)}
+
+/* ---------- positioning band ---------- */
+.posit{text-align:center;max-width:24ch;margin:0 auto}
+.posit .eyebrow{color:#fff;opacity:.7}
+.posit p{font-family:var(--font-head);font-weight:500;font-size:clamp(24px,3.6vw,40px);line-height:1.22;margin:18px 0 0}
+.posit p b{color:var(--accent);font-weight:600}
+
+/* ---------- more work list ---------- */
+.more{display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(28px,5vw,64px)}
+@media(max-width:680px){.more{grid-template-columns:1fr}}
+.more a{display:flex;align-items:center;justify-content:space-between;gap:16px;text-decoration:none;color:inherit;padding:17px 4px;border-top:1px solid var(--line);transition:padding .25s ease}
+.more a:hover{padding-left:12px;color:var(--accent)}
+.more a .t{font-size:16px}
+.more a .arr{color:var(--muted);transition:transform .25s ease}
+.more a:hover .arr{transform:translateX(4px);color:var(--accent)}
+
+/* ---------- about teaser ---------- */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media(max-width:780px){.about{grid-template-columns:1fr}}
+.about h2{font-size:clamp(22px,3vw,30px);margin-bottom:16px}
+.about p{color:var(--muted);max-width:46ch}
+.about .delight{font-family:var(--font-head);font-weight:500;color:var(--ink);font-size:18px;line-height:1.4;margin-bottom:20px}
+.about .links{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+
+footer{border-top:1px solid var(--line);padding:40px 0 56px}
+footer .row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px}
+footer a{text-decoration:none;color:var(--muted)}
+footer a:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap row">
+    <a class="brand" href="#top">Hally Bowman</a>
+    <div class="links">
+      <a href="#work">Work</a>
+      <a href="https://www.hallybowman.com/about">About</a>
+      <a href="https://www.hallybowman.com/blog">Writing</a>
+      <a class="cta" href="https://www.hallybowman.com/s/Hally-Bowman-Lead-UX-Designer-Resume-2025-f4ml.pdf">Resume</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow greet r">Hi, I'm Hally Bowman</div>
+      <h1 class="r">I design the <em>judgment</em> behind AI-native products.</h1>
+      <p class="sub r">12+ years turning messy, real-world problems into systems that feel obvious — most recently where AI meets the everyday tools people work in.</p>
+      <div class="ctas r">
+        <a class="btn btn-primary" href="#work">See selected work <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="https://www.hallybowman.com/about">About me</a>
+      </div>
+      <div class="cred r">Lead Product Designer · ex-electrical engineer · San Francisco Bay Area</div>
+    </div>
+
+    <div class="artpanel r">
+      <div data-render="art"></div>
+      <div class="artcap">
+        <span class="ttl">A self-portrait, drawn as data</span>
+        <span style="color:var(--muted)">one column per project · 12 years</span>
+      </div>
+      <div class="artcap" style="margin-top:4px">
+        <div class="key">
+          <span><i style="background:var(--c-ai)"></i>AI tools</span>
+          <span><i style="background:var(--c-data)"></i>Data &amp; analytics</span>
+          <span><i style="background:var(--c-commerce)"></i>Commerce</span>
+          <span><i style="background:var(--c-other)"></i>Other</span>
+        </div>
+        <div class="key" style="color:var(--muted)">
+          <span>○ research</span><span>│ systems</span><span>● AI</span><span>▪ craft</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ FEATURED WORK ============ -->
+<section class="band band--mist" id="work">
+  <div class="wrap">
+    <div class="sec-top r">
+      <h2>Selected work</h2>
+      <a class="all" href="#more">All projects ↓</a>
+    </div>
+    <div class="feat r" data-render="featured"></div>
+  </div>
+</section>
+
+<!-- ============ POSITIONING ============ -->
+<section class="band band--dark">
+  <div class="wrap">
+    <div class="posit r">
+      <div class="eyebrow">How I work</div>
+      <p>I'm a user advocate first. My job is to make the <b>right thing to build</b> obvious — then make it easy to use.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MORE WORK ============ -->
+<section class="band" id="more">
+  <div class="wrap">
+    <div class="sec-top r"><h2>More work</h2></div>
+    <div class="more r" data-render="more"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT TEASER ============ -->
+<section class="band band--mist">
+  <div class="wrap about r">
+    <div>
+      <div class="eyebrow">About</div>
+      <h2>Designer, engineer, button-presser.</h2>
+    </div>
+    <div>
+      <p class="delight">As a kid I wanted to be an inventor who pressed lots of buttons. That part never really changed.</p>
+      <p>Before product design I was an electrical design engineer — which is still how I think: find the real constraint, then design the simplest thing that holds.</p>
+      <div class="links">
+        <a class="btn btn-ghost" href="https://www.hallybowman.com/about">More about me</a>
+        <a class="btn btn-ghost" href="https://www.hallybowman.com/s/Hally-Bowman-Lead-UX-Designer-Resume-2025-f4ml.pdf">Download resume</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span>© Hally Bowman</span>
+    <span><a href="#work">Work</a> &nbsp;·&nbsp; <a href="https://www.hallybowman.com/about">About</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/hallybowman/">LinkedIn</a></span>
+  </div>
+</footer>
+
+<script>
+/* ===== featured (curate to 3–4 — these are editable theses) ===== */
+const FEATURED = [
+  {dom:"AI tools",c:"--c-ai",t:"Inline AI Commands in a Document Editor",thesis:"Making generative AI discoverable inside a writing tool — without breaking the writer's flow.",tags:["AI-native","Interaction","Research"],href:"https://www.hallybowman.com/work//inline-ai-commands-in-document-editor"},
+  {dom:"Data & analytics",c:"--c-data",t:"Personalized Account Experience",thesis:"Turning a one-size-fits-all account into an experience that adapts to the person using it.",tags:["Systems","Personalization"],href:"https://www.hallybowman.com/work//personalized-account-experience"},
+  {dom:"Data & analytics",c:"--c-data",t:"Survey Dashboard Reports",thesis:"Helping people find the story hiding inside their survey data.",tags:["Data viz","Research"],href:"https://www.hallybowman.com/work//survey-dashboard-reports"},
+  {dom:"Data & analytics",c:"--c-data",t:"Advanced Crosstab Analysis",thesis:"Making a power-user analysis tool legible to everyone who isn't one.",tags:["Complex UI","Systems"],href:"https://www.hallybowman.com/work//advanced-crosstab-analysis"}
+];
+
+/* ===== the rest ===== */
+const MORE = [
+  ["Product Design for an Ecommerce Brand Refresh","https://www.hallybowman.com/work//product-design-for-an-ecommerce-brand-refresh"],
+  ["Sitewide Brand Refresh","https://www.hallybowman.com/work//sitewide-brand-refresh"],
+  ["MOO for Business","https://www.hallybowman.com/work//moo-for-business"],
+  ["Understanding Quiz Results Data","https://www.hallybowman.com/work//understanding-quiz-results-data"],
+  ["Team Collaboration with Notifications","https://www.hallybowman.com/work//team-collaboration-with-alert-notifications"],
+  ["Selecting from Multiple Product Types","https://www.hallybowman.com/work//selecting-from-multiple-product-types"],
+  ["Prototyping a Geolocation Mobile App","https://www.hallybowman.com/work//prototyping-a-geolocation-mobile-app"],
+  ["Browsing a Puzzle Listing Page","https://www.hallybowman.com/work//browsing-to-select-a-puzzle"]
+];
+
+/* ===== Lupi-style data-art self-portrait (placeholder data — refine with your own) =====
+   each project encodes: domain (color) + contribution marks (research/systems/ai/craft) */
+const PROJECTS = [
+  {d:"ai",      m:["research","systems","ai","craft"]},
+  {d:"data",    m:["research","systems","craft"]},
+  {d:"commerce",m:["systems","craft"]},
+  {d:"data",    m:["research","systems","craft"]},
+  {d:"data",    m:["research","craft"]},
+  {d:"commerce",m:["systems","craft"]},
+  {d:"commerce",m:["research","craft"]},
+  {d:"data",    m:["research","craft"]},
+  {d:"other",   m:["systems","craft"]},
+  {d:"commerce",m:["craft"]},
+  {d:"other",   m:["research","craft"]},
+  {d:"other",   m:["craft"]}
+];
+const DOMC = {ai:"var(--c-ai)",data:"var(--c-data)",commerce:"var(--c-commerce)",other:"var(--c-other)"};
+
+function artSVG(){
+  const W=760, H=300, padL=40, padR=30, base=246, top=70;
+  const n=PROJECTS.length;
+  const step=(W-padL-padR)/(n-1);
+  let marks="";
+  PROJECTS.forEach((p,i)=>{
+    const x=padL+i*step, col=DOMC[p.d];
+    // connecting stem
+    marks+=`<line x1="${x}" y1="${base}" x2="${x}" y2="${top+18}" stroke="#D9D5CC" stroke-width="1"/>`;
+    // base domain dot
+    marks+=`<circle cx="${x}" cy="${base}" r="6.5" fill="${col}"/>`;
+    // stacked contribution marks, bottom-up
+    let y=base-26;
+    p.m.forEach(mk=>{
+      if(mk==="craft")    marks+=`<rect x="${x-4}" y="${y-4}" width="8" height="8" rx="1.5" fill="#0B0B0C"/>`;
+      if(mk==="ai")       marks+=`<circle cx="${x}" cy="${y}" r="5" fill="var(--c-ai)"/>`;
+      if(mk==="systems")  marks+=`<line x1="${x}" y1="${y-6}" x2="${x}" y2="${y+6}" stroke="#0B0B0C" stroke-width="2"/>`;
+      if(mk==="research") marks+=`<circle cx="${x}" cy="${y}" r="6" fill="none" stroke="#0B0B0C" stroke-width="1.6"/>`;
+      y-=24;
+    });
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A data-humanism self-portrait: one column per project across twelve years, each encoding its domain and the kinds of contribution made.">
+    <line x1="${padL-14}" y1="${base}" x2="${W-padR+8}" y2="${base}" stroke="#CFCABF" stroke-width="1"/>
+    <text x="${padL-14}" y="${base+24}" font-family="Inter" font-size="11" fill="#9A968C">2013</text>
+    <text x="${W-padR-18}" y="${base+24}" font-family="Inter" font-size="11" fill="#9A968C">2025</text>
+    ${marks}
+  </svg>`;
+}
+
+/* ===== render ===== */
+const pick=s=>document.querySelector(`[data-render="${s}"]`);
+
+pick("art").innerHTML = artSVG();
+
+pick("featured").innerHTML = FEATURED.map(f=>`
+  <a class="fcard" href="${f.href}">
+    <span class="dom"><i style="background:var(${f.c})"></i>${f.dom}</span>
+    <h3>${f.t}</h3>
+    <p class="thesis">${f.thesis}</p>
+    <div class="tags">${f.tags.map(t=>`<span>${t}</span>`).join("")}</div>
+    <span class="go">View case study <span class="arr">→</span></span>
+  </a>`).join("");
+
+pick("more").innerHTML = MORE.map(([t,h])=>`
+  <a href="${h}"><span class="t">${t}</span><span class="arr">→</span></a>`).join("");
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1,rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll(".r").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
